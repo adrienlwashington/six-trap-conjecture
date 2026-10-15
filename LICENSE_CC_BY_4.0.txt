@@ -1,0 +1,10 @@
+Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+Except where otherwise noted, the original non-code materials in The Six-Trap Conjecture, Version 1.0 are licensed by Adrien Washington under the Creative Commons Attribution 4.0 International License.
+
+License terms: https://creativecommons.org/licenses/by/4.0/
+Legal code: https://creativecommons.org/licenses/by/4.0/legalcode
+
+Attribution: Adrien Washington, The Six-Trap Conjecture, Version 1.0 (2026), 10.5281/zenodo.23357210.
+
+This notice applies only to licensable rights controlled by the licensor and does not create exclusive rights in mathematical facts, ideas, equations, or other material not subject to such rights.

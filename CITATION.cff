@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this work, cite the canonical Zenodo Version 1.0 record."
+title: "The Six-Trap Conjecture"
+version: "1.0"
+doi: "10.5281/zenodo.23357210"
+url: "https://doi.org/10.5281/zenodo.23357210"
+authors:
+  - family-names: "Washington"
+    given-names: "Adrien"
+abstract: "An AI-assisted integer-dynamics project centered on the conjecture that every integer n >= 2 reaches one of six recorded periodic cycles under T(n)=n+D(n)-D(n+1). The universal conjecture remains unresolved."
+keywords:
+  - integer dynamics
+  - divisor function
+  - recurrence
+  - computational mathematics
+  - conjecture
+license: "CC-BY-4.0"
+# Source code under code/ is separately licensed MIT.
