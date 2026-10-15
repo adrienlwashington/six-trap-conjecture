@@ -1,0 +1,114 @@
+name: Sync canonical Six-Trap v1.0 files
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/sync-github-package.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Pull canonical files from Zenodo v1.0
+        shell: python
+        run: |
+          import io, json, pathlib, urllib.request, zipfile
+
+          record_url = "https://zenodo.org/api/records/23357210"
+          with urllib.request.urlopen(record_url) as r:
+              record = json.load(r)
+
+          wanted_name = "Six-Trap_Public_v1.0.zip"
+          entry = next(f for f in record["files"] if f.get("key") == wanted_name)
+          links = entry.get("links", {})
+          download_url = links.get("content") or links.get("self")
+          if not download_url:
+              raise RuntimeError("Zenodo did not expose a file download URL")
+
+          with urllib.request.urlopen(download_url) as r:
+              payload = r.read()
+
+          targets = [
+              "AI_AND_PROVENANCE.md",
+              "RESEARCH_NOTE.md",
+              "assets/largest_excursion.png",
+              "data/h50_descent/cover_10000/certificates.jsonl.gz",
+              "data/h50_descent/cover_10000/summary.json",
+              "data/h50_descent/cover_10000/frontier.jsonl.gz",
+              "data/h50_descent/independent_continuation_check.json",
+              "data/h50_descent/RESULT_STATUS.json",
+              "data/h50_descent/continuation_50_steps/groups.json",
+              "data/h50_descent/continuation_50_steps/continuation_result.json",
+              "data/h50_descent/independent_cover_check.json",
+              "data/h50_descent/independent_grouping_check.json",
+              "data/README.md",
+              "data/census_verification/record_trajectories_summary.csv",
+              "data/census_verification/independently_discovered_cycles.csv",
+              "data/census_verification/verification.json",
+              "data/census_billion/cycles.csv",
+              "data/census_billion/stopping_time_histogram.csv",
+              "data/census_billion/audit.json",
+              "data/census_billion/excursion_ratio_records.csv",
+              "data/census_billion/peak_records.csv",
+              "data/census_billion/basins.csv",
+              "data/census_billion/summary.json",
+              "data/census_billion/stopping_time_records.csv",
+              "data/census_billion/verification_targets.csv",
+              "LICENSE_CC_BY_4.0.txt",
+              "CONTRIBUTING.md",
+              "code/h50_descent/verify_continuation.py",
+              "code/h50_descent/verify_grouping.py",
+              "code/h50_descent/continue_cover.py",
+              "code/h50_descent/verify_cover.py",
+              "code/h50_descent/descent_attack.py",
+              "code/LICENSE",
+              "code/README.md",
+              "code/census/audit_results.py",
+              "code/census/census.cpp",
+              "code/census/census_executed.cpp",
+              "code/census/verify.cpp",
+              "SIX_CYCLES.md",
+              "LICENSES.md",
+              "CHALLENGE.md",
+              "CITATION.cff",
+              "SUBMIT_A_RESULT.md",
+              "KNOWN_RESULTS.md",
+              "RESEARCH_NOTE.pdf",
+              "reports/H50_FORWARD_DESCENT_REPORT.md",
+              "reports/README.md",
+              "reports/BILLION_CENSUS_REPORT.md",
+              "CONJECTURE.md",
+              "ORIGINALITY_AND_LIMITATIONS.md",
+          ]
+
+          with zipfile.ZipFile(io.BytesIO(payload)) as z:
+              members = z.namelist()
+              for rel in targets:
+                  candidates = [n for n in members if n == rel or n.endswith("/" + rel)]
+                  if len(candidates) != 1:
+                      raise RuntimeError(f"Expected exactly one archive member for {rel}, got {candidates}")
+                  data = z.read(candidates[0])
+                  out = pathlib.Path(rel)
+                  out.parent.mkdir(parents=True, exist_ok=True)
+                  out.write_bytes(data)
+                  print(f"synced {rel} ({len(data)} bytes)")
+
+      - name: Commit synchronized files
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add AI_AND_PROVENANCE.md RESEARCH_NOTE.md assets data LICENSE_CC_BY_4.0.txt CONTRIBUTING.md code SIX_CYCLES.md LICENSES.md CHALLENGE.md CITATION.cff SUBMIT_A_RESULT.md KNOWN_RESULTS.md RESEARCH_NOTE.pdf reports CONJECTURE.md ORIGINALITY_AND_LIMITATIONS.md
+          if git diff --cached --quiet; then
+            echo "No synchronization changes needed."
+          else
+            git commit -m "Sync canonical Version 1.0 technical files"
+            git push
+          fi
