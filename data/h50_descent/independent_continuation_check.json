@@ -1,0 +1,15 @@
+{
+  "all_passed": true,
+  "fraction_DP_groups_checked": 415,
+  "horizon": 39,
+  "brute_force_short_word_checks": 15,
+  "modular_checks": {
+    "prime_tail_families_sampled": 700,
+    "modular_divisibility_bounds_checked": 16800,
+    "actual_even_branch_prime": 101,
+    "all_passed": true,
+    "scope": "finite checks only; universal lemma is proved in the report"
+  },
+  "final_exact_density": "1465497517150036500881632322460683852989669687076834714478473874462285105941798237166631226960041972312602350786713236795739/1685305236769110904458560286557724281112736457290136277951208019840411778367507660296252856676868304273502102196584448000000",
+  "seconds": 37.36524231499993
+}

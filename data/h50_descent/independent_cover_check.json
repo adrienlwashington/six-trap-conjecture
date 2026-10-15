@@ -1,0 +1,12 @@
+{
+  "all_checks_passed": true,
+  "families_checked": 295396,
+  "certificates_checked": 56178,
+  "symbolic_branch_steps_checked": 1591065,
+  "least_prime_exclusions_checked": 7755274,
+  "density_recomputed_from_periodic_constraints": "69379380251330612578632069805022452480693065766275968588062553021039993/91526080524487741956676118965717342820180492222466933063335410801293750",
+  "full_partition_mass": "1",
+  "prefix_disjointness_passed": true,
+  "max_certified_steps": 9,
+  "seconds": 18.531419100999983
+}

@@ -1,0 +1,19 @@
+{
+  "date": "2026-09-24",
+  "experiment": "Collatz Descent Attack 01",
+  "map": "T(n)=n+D(n)-D(n+1), n>=2, D(n)=n/lpf(n)",
+  "main_result": {
+    "property": "exists k in [1,50] with T^k(n)<n",
+    "notion": "lower natural density",
+    "exact_lower_bound": "1465497517150036500881632322460683852989669687076834714478473874462285105941798237166631226960041972312602350786713236795739/1685305236769110904458560286557724281112736457290136277951208019840411778367507660296252856676868304273502102196584448000000",
+    "decimal_lower_bound": 0.8695739413707237,
+    "hand_proof": "reports/H50_FORWARD_DESCENT_REPORT.md"
+  },
+  "universal_convergence_proved": false,
+  "density_one_descent_proved": false,
+  "counterexample_produced": false,
+  "Tao_theorem_transferred": false,
+  "external_review": false,
+  "proof_assistant_formalization": false,
+  "independent_implementation_checks": {"families": 295396,"DP_groups": 415,"all_passed": true}
+}

@@ -1,0 +1,24 @@
+{
+  "status": "passed",
+  "all_cycle_edges_brute_divisor_checked": 86,
+  "complete_interval_seed_count": 999999999,
+  "count_histogram_weighted_sum_record_and_cycle_checks": "passed",
+  "steps_to_cycle_quantiles": {"1/2": 148,"9/10": 207,"99/100": 271,"999/1000": 332},
+  "mean_steps_to_cycle": 152.725996867726,
+  "adjacent_attractor_difference_percent": 10.002922720005845,
+  "maximum_excursion_ratio": 218372.76170540907,
+  "independent_verification": {
+    "status": "all_checked_targets_match",
+    "checked_seed_classifications": 120057,
+    "checked_per_seed_peaks": 0,
+    "independently_discovered_cycles": 6,
+    "verified_record_trajectories": 113,
+    "record_witness_edges": 25225,
+    "distinct_memoized_states": 1331396,
+    "map_evaluations": 1331482,
+    "trial_divisions": 672350713,
+    "wall_seconds": 2.73588,
+    "limitations": "Internal independently written implementation; selected targets, not a second full billion-seed census or external review."
+  },
+  "scope": "Output audit, cycle-edge enumeration and optional independently computed targets; not a second full census or universal proof."
+}
