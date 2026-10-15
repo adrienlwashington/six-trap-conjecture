@@ -1,0 +1,34 @@
+{
+  "prime_max": 97,
+  "next_prime": 101,
+  "max_nodes": 10000,
+  "max_depth": 24,
+  "expanded": 10000,
+  "certificates": 56178,
+  "certificate_max_steps": 9,
+  "certified_density": 0.7580285297234837,
+  "exact_certified_density": [
+    "69379380251330612578632069805022452480693065766275968588062553021039993",
+    "91526080524487741956676118965717342820180492222466933063335410801293750"
+  ],
+  "prime_tail_density": 0.21256231921430266,
+  "prime_tail_families": 10791,
+  "depth_frontier_density": 0.0,
+  "depth_frontier_families": 0,
+  "node_frontier_density": 0.029409151062213718,
+  "node_frontier_families": 228427,
+  "mass_partition_exactly_one": true,
+  "elapsed_seconds": 35.01881102499999,
+  "checkpoints": [
+    {"expanded":1000,"certified_density":0.7489446554376274,"prime_tail_density":0.20192101557394224,"heap_nodes":25218,"seconds":1.233},
+    {"expanded":2000,"certified_density":0.7519376552457624,"prime_tail_density":0.20570984239677734,"heap_nodes":48879,"seconds":2.655},
+    {"expanded":3000,"certified_density":0.753653815103558,"prime_tail_density":0.20769128762782732,"heap_nodes":71479,"seconds":4.023},
+    {"expanded":4000,"certified_density":0.7548281901290753,"prime_tail_density":0.20899627451697994,"heap_nodes":94277,"seconds":5.876},
+    {"expanded":5000,"certified_density":0.7556310806830977,"prime_tail_density":0.20993640528819543,"heap_nodes":116986,"seconds":7.172},
+    {"expanded":6000,"certified_density":0.7562776512765567,"prime_tail_density":0.2106588337403849,"heap_nodes":139679,"seconds":9.125},
+    {"expanded":7000,"certified_density":0.7568275068203515,"prime_tail_density":0.21125983390626052,"heap_nodes":162299,"seconds":11.233},
+    {"expanded":8000,"certified_density":0.7572935992843889,"prime_tail_density":0.21175757310044122,"heap_nodes":184317,"seconds":12.667},
+    {"expanded":9000,"certified_density":0.7576965356882469,"prime_tail_density":0.21218142694971995,"heap_nodes":206350,"seconds":14.976},
+    {"expanded":10000,"certified_density":0.7580285297234837,"prime_tail_density":0.21256231921430266,"heap_nodes":228427,"seconds":16.414}
+  ]
+}
