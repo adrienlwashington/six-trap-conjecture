@@ -3,7 +3,12 @@
   "all_cycle_edges_brute_divisor_checked": 86,
   "complete_interval_seed_count": 999999999,
   "count_histogram_weighted_sum_record_and_cycle_checks": "passed",
-  "steps_to_cycle_quantiles": {"1/2": 148,"9/10": 207,"99/100": 271,"999/1000": 332},
+  "steps_to_cycle_quantiles": {
+    "1/2": 148,
+    "9/10": 207,
+    "99/100": 271,
+    "999/1000": 332
+  },
   "mean_steps_to_cycle": 152.725996867726,
   "adjacent_attractor_difference_percent": 10.002922720005845,
   "maximum_excursion_ratio": 218372.76170540907,

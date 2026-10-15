@@ -9,6 +9,7 @@ from dataclasses import dataclass
 import argparse, heapq, itertools, json, gzip, time
 from pathlib import Path
 
+
 def primes_up_to(n: int) -> list[int]:
     a=bytearray(b'\x01')*(n+1); a[:2]=b'\x00\x00'
     for p in range(2,int(n**.5)+1):
@@ -22,6 +23,7 @@ class Node:
     weight:F
     path:tuple[tuple[int,int],...]
 
+
 def sub(node:Node, a:int, b:int, weight:F) -> Node | None:
     """Substitute old parameter t=a*s+b exactly."""
     forb={}
@@ -34,6 +36,7 @@ def sub(node:Node, a:int, b:int, weight:F) -> Node | None:
     return Node(node.M*a,node.r+node.M*b,node.u*a,node.v+node.u*b,
                 forb,weight,node.path)
 
+
 def fix_parity(node:Node, odd:int) -> Node:
     assert node.u%2==1
     b=(odd-node.v)%2
@@ -41,13 +44,17 @@ def fix_parity(node:Node, odd:int) -> Node:
     assert ans is not None and ans.v%2==odd
     return ans
 
+
 def apply_branch(node:Node, odd:int, p:int) -> Node:
-    if odd: a,b=p+2,p
-    else: a,b=3*p-2,2
+    if odd:
+        a,b=p+2,p
+    else:
+        a,b=3*p-2,2
     assert (a*node.u)%(2*p)==0
     assert (a*node.v-b)%(2*p)==0
     return Node(node.M,node.r,a*node.u//(2*p),(a*node.v-b)//(2*p),
                 node.forbidden,node.weight,node.path+((odd,p),))
+
 
 def least_prime_children(node:Node, odd:int, primes:list[int]):
     """Yield exact least-prime children, plus final unprocessed tail."""
@@ -72,12 +79,15 @@ def least_prime_children(node:Node, odd:int, primes:list[int]):
                  rem.weight*F(available-1,available),rem.path)
     yield None,rem
 
+
 def encode(node:Node, kind:str, **extra):
     obj={'kind':kind,'path':node.path,'M':str(node.M),'r':str(node.r),
          'u':str(node.u),'v':str(node.v),
          'forbidden':{str(q):sorted(v) for q,v in node.forbidden.items()},
          'weight':[str(node.weight.numerator),str(node.weight.denominator)]}
-    obj.update(extra); return obj
+    obj.update(extra)
+    return obj
+
 
 def run(prime_max:int,max_nodes:int,max_depth:int,out:Path):
     out.mkdir(parents=True,exist_ok=True)
@@ -112,8 +122,10 @@ def run(prime_max:int,max_nodes:int,max_depth:int,out:Path):
                 savecert(par,'parity_bound',len(node.path)+1,odd=odd);continue
             for child,tail in least_prime_children(par,odd,primes):
                 if child is not None:
-                    if child.u<=child.M: savecert(child,'exact',len(child.path))
-                    else: heapq.heappush(heap,(-float(child.weight),next(serial),child))
+                    if child.u<=child.M:
+                        savecert(child,'exact',len(child.path))
+                    else:
+                        heapq.heappush(heap,(-float(child.weight),next(serial),child))
                 else:
                     assert tail is not None
                     bound=F(nxt+2,2*nxt) if odd else F(3,2)

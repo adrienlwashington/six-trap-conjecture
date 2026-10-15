@@ -51,6 +51,7 @@ public:
             ++trial_divisions;
             if(n%p==0) return p;
         }
+        // Continue exact trial division above the precomputed prime list if needed.
         for(u64 d=(u64)PRIME_LIMIT+1;d<=n/d;d+=2) {
             ++trial_divisions;
             if(n%d==0) return d;
@@ -70,6 +71,9 @@ int main(int argc,char**argv) {
         auto begin=std::chrono::steady_clock::now();
         std::cerr<<"Building exact least-factor sieve through "<<N+1<<"\n";
         LeastFactor factor(N+1);
+        // Packed state: 4 label bits + 12 distance bits, using two bytes per seed.
+        // Labels: 0 unknown, 15 active, 1..14 discovered cycles.
+        // All capacity/overflow limits fail closed; no truncated classifications.
         std::vector<u16> packed(N+1,0);
         auto label=[&](u64 n)->u8{return (u8)(packed[n]&15);};
         auto distance=[&](u64 n)->u16{return (u16)(packed[n]>>4);};
@@ -81,14 +85,19 @@ int main(int argc,char**argv) {
         std::vector<Cycle> cycles;
         std::vector<u64> path;path.reserve(1024);
         std::unordered_map<u64,size_t> active_high;
+        // Known cycle states above the dense-cache boundary. Keeping these
+        // globally recognized prevents small requested intervals that cut
+        // through a discovered cycle from overcounting steps to first cycle entry.
         std::unordered_map<u64,u8> known_high_cycle;
         std::vector<Record> step_records,peak_records,ratio_records;
         u64 calls=0,max_value=0,max_value_seed=0,max_steps=0,max_steps_seed=0;
         u64 ratio_peak=0,ratio_seed=1,total_steps=0,neighbor_changes=0;
         std::vector<u64> histogram(1,0);u8 previous=0;
+        // CSVs store direct edge witnesses for discovered cycles and record trajectories.
         auto step=[&](u64 n)->u64 {
             if(n<2 || n>VALUE_CAP) throw std::runtime_error("value cap/domain violation");
             ++calls;
+            // Exact parity simplification: the even argument has least factor 2.
             u64 r=(n&1)?(n-1)/2+n/factor(n):n+n/2-(n+1)/factor(n+1);
             if(r<2 || r>VALUE_CAP) throw std::runtime_error("next value cap/domain violation");
             return r;
@@ -131,6 +140,9 @@ int main(int argc,char**argv) {
                         auto mi=std::min_element(members.begin(),members.end());
                         std::rotate(members.begin(),mi,members.end());
                         u64 high=*std::max_element(members.begin(),members.end());
+                        // Deduplicate cycles wholly above the dense-cache boundary.
+                        // This is relevant for small requested intervals; none of the
+                        // six cycles in the billion run was above its cache boundary.
                         auto existing=std::find_if(cycles.begin(),cycles.end(),
                             [&](const Cycle& c){return c.minimum==members.front();});
                         if(existing==cycles.end()) {
@@ -185,6 +197,7 @@ int main(int argc,char**argv) {
         auto save_records=[&](const std::string&name,const std::vector<Record>&rs){std::ofstream f(out/name);f<<"seed,value,cycle_minimum\n";for(auto r:rs)f<<r.seed<<','<<r.value<<','<<r.cycle_min<<'\n';};
         save_records("stopping_time_records.csv",step_records);save_records("peak_records.csv",peak_records);save_records("excursion_ratio_records.csv",ratio_records);
         std::ofstream hi(out/"stopping_time_histogram.csv");hi<<"steps_to_first_cycle_entry,seed_count\n";for(size_t i=0;i<histogram.size();i++)hi<<i<<','<<histogram[i]<<'\n';
+        // Save deterministic verification targets, including all first record seeds.
         std::vector<u64> targets={2,N};for(u64 x=2;x<=std::min<u64>(N,100000);x++)targets.push_back(x);
         u64 rng=0xD20260924ULL;for(int i=0;i<20000;i++){rng^=rng<<13;rng^=rng>>7;rng^=rng<<17;targets.push_back(2+rng%(N-1));}
         for(auto r:step_records) targets.push_back(r.seed);

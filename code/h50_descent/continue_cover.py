@@ -33,7 +33,11 @@ def group_frontier(folder:Path,out:Path,step:F,aware:bool):
                 p=d['next_prime'];add(A*F(p+2,2*p),0,w,depth+1);continue
             if not aware:
                 add(A*F(3,2),1,w,depth+1);continue
+            # Resolve the following parity after an even branch with p>cutoff.
+            # Even following step: conservative upper 3/2; it remains pairable.
             add(A*F(9,4),1,w/2,depth+2)
+            # Odd following step: 3 cannot divide this state. At each q>=5,
+            # CRT bounds the conditional divisibility probability by 1/available.
             left=w/2;u=int(d['u']);forbid=d['forbidden']
             for q in primes_up_to(d['next_prime']-1):
                 if q==3:continue
@@ -56,6 +60,8 @@ def group_frontier(folder:Path,out:Path,step:F,aware:bool):
     return payload
 
 def probabilities(A:F,prev:int,H:int,checkpoints:set[int]):
+    # State=(number E, number discounted O, whether last was E).
+    # Ordinary O count is t-e-c. Products: (3/2)^e(7/10)^c(5/6)^(t-e-c).
     states={(0,0,prev):1}; result={}; anum=A.numerator; aden=A.denominator
     pow2=[1];pow3=[1];pow5=[1];pow7=[1]
     for i in range(H):
@@ -63,6 +69,7 @@ def probabilities(A:F,prev:int,H:int,checkpoints:set[int]):
         pow5.append(pow5[-1]*5);pow7.append(pow7[-1]*7)
     def absorbed(t,e,c):
         o=t-e-c
+        # numerator 3^e 7^c 5^o; denominator 2^t 5^c 3^o.
         return anum*pow3[e]*pow7[c]*pow5[o]<=aden*pow2[t]*pow5[c]*pow3[o]
     for t in range(1,H+1):
         nxt=defaultdict(int)

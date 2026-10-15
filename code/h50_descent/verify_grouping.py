@@ -41,6 +41,7 @@ def run(folder,result,out):
                 if not before:break
             if before:record(A*F(309,404),0,w*before/2,k+2)
     expected={(a['idx'],a['prevE']):F(a['weight']) for a in d['groups']}
+    # Drop zero-weight entries created by this checker.
     groups={key:value for key,value in groups.items() if value}
     assert groups==expected
     assert absorbed==F(*map(int,d['immediate']))

@@ -5,7 +5,7 @@ explicit short-word enumeration, and modular tests of the prime-tail lemma.
 from pathlib import Path
 from fractions import Fraction as F
 from collections import defaultdict
-import argparse,json,gzip,itertools,time,math
+import argparse,json,gzip,itertools,time,random,math
 
 def fraction_dp(A,prev,H):
     live={(A,prev):1}
@@ -31,7 +31,7 @@ def brute(A,prev,H):
 
 def modular_checks(folder,limit=700):
     primes=[p for p in range(3,102,2) if all(p%d for d in range(3,math.isqrt(p)+1,2))]
-    selected=0; tests=0
+    selected=0; tests=0;parity=0
     with gzip.open(folder/'frontier.jsonl.gz','rt') as f:
         for line in f:
             d=json.loads(line)
@@ -39,10 +39,13 @@ def modular_checks(folder,limit=700):
             u,v=int(d['u']),int(d['v']);bad={int(q):set(a) for q,a in d['forbidden'].items()}
             p=101
             if u%p==0:continue
-            r=(-(v+1)*pow(u,-1,p))%p
+            # Selecting the actual least prime p=101 adds just one new root;
+            # all smaller odd primes were excluded by the stored tail family.
+            r=(- (v+1)*pow(u,-1,p))%p
             UU=(3*p-2)*u//2
             VV=((3*p-2)*(u*r+v)-2)//(2*p)
             assert ((3*p-2)*(u*r+v)-2)%(2*p)==0 and UU%2==1
+            # Choose next state odd. Transform t=101*(2s+b)+r.
             bit=(1-VV)%2; AA=2*UU;BB=UU*bit+VV
             assert BB%2==1
             for q in primes:
@@ -79,6 +82,7 @@ def run(folder,result,out):
             assert brute(F(g['A']),g['prevE'],h)==fraction_dp(F(g['A']),g['prevE'],h)
             short+=1
     mod=modular_checks(folder)
+    # Recompute the final rational from the independently checked fractions.
     groupdata=json.loads((result.parent/'groups.json').read_text())
     summary=json.loads((folder/'summary.json').read_text())
     total=F(*map(int,summary['exact_certified_density']))+F(*map(int,groupdata['immediate']))

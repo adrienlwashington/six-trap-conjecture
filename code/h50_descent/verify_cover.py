@@ -69,6 +69,8 @@ def verify(folder:Path,out:Path):
                     assert kind in ('exact','parity_bound','tail_bound')
                     cmass+=weight;certs+=1;maxdepth=max(maxdepth,depth)
                 if records%50000==0:print(json.dumps({'records':records,'seconds':time.perf_counter()-t0}),flush=True)
+    # A tail>=101 event is disjoint from every explicit prime child (<101).
+    # All other overlap would require a terminal event sequence to be a prefix.
     for word in leaves:
         for k in range(len(word)):
             assert word[:k] not in leaves
