@@ -4,7 +4,8 @@
 
 ## The Six-Trap Conjecture
 
-Created and directed by **Adrien Washington**.
+Created and directed by **Adrien Washington**.  
+**ORCID:** [0009-0005-5219-8404](https://orcid.org/0009-0005-5219-8404)
 
 **Canonical frozen Version 1.0 record:** [Zenodo DOI 10.5281/zenodo.23357210](https://doi.org/10.5281/zenodo.23357210)
 
@@ -50,6 +51,8 @@ Use the repository's **Issues** tab to submit a concrete counterexample, candida
 - [How to submit a result](SUBMIT_A_RESULT.md)
 - [Originality and limitations](ORIGINALITY_AND_LIMITATIONS.md)
 - [AI-assisted provenance](AI_AND_PROVENANCE.md)
+- [Contributing and challenge-response policy](CONTRIBUTING.md)
+- [Code of conduct](CODE_OF_CONDUCT.md)
 
 ## What is established
 
@@ -85,4 +88,4 @@ https://doi.org/10.5281/zenodo.23357210
 
 ## Licenses
 
-Original non-code materials are released under **CC BY 4.0**. Source code under `code/` is released under the **MIT License**. See [LICENSES.md](LICENSES.md).
+Original non-code materials are released under **CC BY 4.0**. Source code under `code/` is released under the **MIT License**. See the top-level [LICENSE.md](LICENSE.md) and full [LICENSES.md](LICENSES.md).
